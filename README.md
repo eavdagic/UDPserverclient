@@ -11,12 +11,12 @@ run ```go build```
 
 ## To Run It
 After building client and server:
-#### Using start.sh
+#### (1) Using start.sh
 Run the ./start.sh script to run both the client and server at same time without needing to open a second terminal
 start.sh accepts two flags, -p and -a
   * -p is port (ex: 8000)
   * -a is host:port (ex: 127.0.0.1:8001)
-#### Running client/server individually
+####  (Or) (2) Running client/server individually
 ##### Server
 cd to server directory and run server
 to run with default flags ```./server```
@@ -26,5 +26,5 @@ to run with address flag ```./server -address="127.0.0.1:8000"```
 cd to client directory and run client
 to run with default flags ```./client```
 ./client accepts -address and -port flag
-to run with flags ```./client -address="127.0.0.1:8000" -port="8001"
+to run with flags ```./client -address="127.0.0.1:8000" -port="8001"```
 
