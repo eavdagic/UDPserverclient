@@ -1,13 +1,33 @@
 package main
 
 import (
+	"bytes"
+	"encoding/gob"
 	"flag"
 	"fmt"
 	"log"
 	"net"
-	"strconv"
 	"time"
 )
+
+type Payload struct {
+	Msg  string
+	Ip   string
+	Port string
+	Time time.Time
+}
+
+func newPayload(msg string, port string, ip string) Payload {
+	currentTime := time.Now()
+	pl := Payload{
+		Msg:  msg,
+		Time: currentTime,
+		Port: port,
+		Ip:   ip,
+	}
+
+	return pl
+}
 
 func main() {
 	fmt.Print("Starting client...\n")
@@ -34,15 +54,26 @@ func main() {
 	}
 	defer conn.Close()
 
-	i := 0
+	msg := `"It always seems impossible until it's done" - Nelson Mandela`
+
+	i := 1
 	for {
-		msg := strconv.Itoa(i)
-		i++
-		buff := []byte(msg)
-		_, err := conn.Write(buff)
+		var buffer bytes.Buffer
+		encoder := gob.NewEncoder(&buffer)
+
+		pl := newPayload(msg, port, serverAddress)
+		encoder.Encode(pl)
+
+		conn.Write(buffer.Bytes())
 		if err != nil {
 			fmt.Print(err)
 		}
+		msgSentAt := time.Now()
+
 		time.Sleep(time.Second * 2)
+		fmt.Print("------------------\n")
+		fmt.Printf("Time elapsed since previous message was sent: %s\n", time.Since(msgSentAt))
+		fmt.Printf("Total messages sent so far: %d\n", i)
+		i++
 	}
 }

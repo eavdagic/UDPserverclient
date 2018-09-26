@@ -1,5 +1,5 @@
 port="8011"
-address="127.0.0.1:8080"
+address="127.0.0.1:8002"
 
 while getopts "p:a:" flag; do
 	case "${flag}" in
@@ -8,9 +8,6 @@ while getopts "p:a:" flag; do
 	esac
 done
 
-./server/server -address=$address &
+./server/server -address="$address" &
 sleep 2 &
-./client/client -port=$port -address=$address
-
-
-
+./client/client -port="$port" -address="$address"
