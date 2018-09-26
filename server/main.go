@@ -1,15 +1,20 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net"
 )
 
 func main() {
-	fmt.Println("vim-go")
+	fmt.Print("Starting server...\n")
+	var serverAddress string
 
-	packetConn, err := net.ListenPacket("udp", "127.0.0.1:8000")
+	flag.StringVar(&serverAddress, "address", "127.0.0.1:8000", "Host and port to listen on")
+	flag.Parse()
+
+	packetConn, err := net.ListenPacket("udp", serverAddress)
 
 	if err != nil {
 		log.Fatal(err)
